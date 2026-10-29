@@ -11,8 +11,8 @@
 - Perl
 - Jellyfish
 - R
-  - [karyoploteR] (https://www.bioconductor.org/packages/release/bioc/html/karyoploteR.html)
-  - [HMM] (https://cran.r-project.org/web/packages/HMM/index.html)
-  - [dunn.test] (https://cran.r-project.org/web/packages/dunn.test/index.html)
+  - [karyoploteR](https://www.bioconductor.org/packages/release/bioc/html/karyoploteR.html)
+  - [HMM](https://cran.r-project.org/web/packages/HMM/index.html)
+  - [dunn.test](https://cran.r-project.org/web/packages/dunn.test/index.html)
 
 
