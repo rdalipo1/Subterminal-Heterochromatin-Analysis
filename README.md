@@ -66,6 +66,15 @@
 
 - To start, we are using the `SubTeloJelly.variable.pl` perl script which calls Jellyfish and blastdbcmd. The arguments are as follows
 
-  - **Argument 1**: Genome size file (instructions on how to make it can be found in **Genome Set Up** section above
-  - **Argument 2**: 
+  - **Argument 1**: Genome(chromosome) size file (instructions on how to make it can be found in **Genome Set Up** section above
+  - **Argument 2**: Blast generated database
+  - **Argument 3**: Total genome size. This doesn't need to be exact. I used 3G for primates and *X. laevis* and 2G for *X. tropicalis*
+  - **Argument 4**: K-mer size. For *Xenopus* we used k=13 and for primates it was k=7
+  - **Argument 5**: Subterminal Heterochromatin Search Space Size. This argument is key as the rest of the analysis heavily depends on the estimated size of the                       search space. For primates we used 5MB. For *Xenopus* we used 20MB (Arguments need to be full numbers). (Details for why are in the paper)
+  - **Argument 6**: Label for search space. 5M and 20M in our case
+    
+- Example for chimp:
 
+    `perl ~/scripts/SubTeloJelly.variable.pl ~/chimp.genome/t2t/chimp.t2t.chr.length.noacros.txt ~/chimp.genome/t2t/chimp.t2t.db 3000000000 13 5000000 5MB &`
+
+  - This job may take a long time and you should use srun to not destroy your servers headnode
