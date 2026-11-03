@@ -44,13 +44,13 @@
     `./genome.size.from.fa.sh chimp.t2t.chronly.renamed.headers.fa chimp.t2t.chronly.chr.size.txt`
 
   - Head of an example file shown below:
- 
-|Chr1|231299448|
-|Chr2|201579334|
-|Chr3|191670129|
-|Chr4|178964043|
-|Chr5|183320697|
-|Chr6|174648847|
+
+| Chr1    | 231299448 |
+| Chr2    | 201579334 |
+| Chr3    | 191670129 |
+| Chr4    | 178964043 |
+| Chr5    | 183320697 |
+| Chr6    | 174648847 |
 
 
 
