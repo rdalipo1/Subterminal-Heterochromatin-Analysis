@@ -21,11 +21,12 @@
 
 - Genomes used in the paper are shown in the supplemental table:
   
-Species	      Name	    Sex	  BioSample ID	BioProject ID
-Chimpanzee	  AG18354	  M	    SAMN30216104	PRJNA916736
-Gorilla	      Jim	      M	    SAMN04003007	PRJNA942267
-X. laevis	    J_2021	  F	    SAMN18035302	PRJNA313213
-X. tropicalis Nigerian 	F	    SAMN13041969	PRJNA577946
+| Species       | Name     | Sex | BioSample ID | BioProject ID |
+|---------------|----------|-----|--------------|---------------|
+| Chimpanzee    | AG18354  | M   | SAMN30216104 | PRJNA916736   |
+| Gorilla       | Jim      | M   | SAMN04003007 | PRJNA942267   |
+| X. laevis     | J_2021   | F   | SAMN18035302 | PRJNA313213   |
+| X. tropicalis | Nigerian | F   | SAMN13041969 | PRJNA577946   |
 
 
 - These can be obtained from either NCBI or Xenbase (add links). NCBI downloads can be done through the [datasets](https://github.com/ncbi/datasets) tool.
