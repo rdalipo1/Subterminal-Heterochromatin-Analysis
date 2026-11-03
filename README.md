@@ -77,4 +77,4 @@
 
     `perl ~/scripts/SubTeloJelly.variable.pl ~/chimp.genome/t2t/chimp.t2t.chr.length.noacros.txt ~/chimp.genome/t2t/chimp.t2t.db 3000000000 13 5000000 5MB &`
 
-  - This job may take a long time and you should use srun to not destroy your servers headnode
+  - This job may take a long time and you should use `srun` to not destroy your servers headnode
