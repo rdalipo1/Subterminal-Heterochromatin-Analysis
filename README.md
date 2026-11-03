@@ -15,6 +15,7 @@
   - [HMM](https://cran.r-project.org/web/packages/HMM/index.html)
   - [dunn.test](https://cran.r-project.org/web/packages/dunn.test/index.html)
 - Bedtools
+- BLAST+
 
 
 ### Genome Set Up
@@ -38,8 +39,14 @@
   *>Chr1*
 
   - This can be done with awk, sed or any other regex method of choice.
+ 
+- Next is to create a database of the fa file with blast. This can be done with one line of code as long as blast is installed in the system:
 
-- You will then need to generate a chromosome size file. You can use the 'genome.size.from.fa.sh' script to generate this for you. The two arguments it needs is the fa file and the name of the resulting chr.size file:
+  `makeblastdb -in chimp.t2t.chronly.renamed.headers.fa -dbtype nucl -parse_seqids -title chimp.t2t -out chimp.t2t.db`
+
+  - The `-parse_seqids` will apply the renamed headers and you can use the `chimp.t2t.db` name to refer to the database in the future
+
+- Lastly, generate a chromosome a size file. The 'genome.size.from.fa.sh' script can be used to generate this. The two arguments it needs is the fa file and the name of the resulting chr.size file:
 
     `./genome.size.from.fa.sh chimp.t2t.chronly.renamed.headers.fa chimp.t2t.chronly.chr.size.txt`
 
@@ -55,5 +62,10 @@
 | Chr6 | 174648847 |
 
 
+### Step 1. K-mer counting and filtering
 
+- To start, we are using the `SubTeloJelly.variable.pl` perl script which calls Jellyfish and blastdbcmd. The arguments are as follows
+
+  - **Argument 1**: Genome size file (instructions on how to make it can be found in **Genome Set Up** section above
+  - **Argument 2**: 
 
