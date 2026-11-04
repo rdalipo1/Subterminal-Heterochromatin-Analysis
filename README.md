@@ -70,12 +70,12 @@
 
 - To start, we are using the `SubTeloJelly.variable.pl` perl script which calls Jellyfish and blastdbcmd. The arguments are as follows
 
-  - **Argument 1**: Genome(chromosome) size file (instructions on how to make it can be found in **Genome Set Up** section above
+  - **Argument 1**: Genome(chromosome) size file (instructions on how to make it can be found in **Genome Set Up** section above)
   - **Argument 2**: Blast generated database
-  - **Argument 3**: Total genome size. This doesn't need to be exact. I used 3G for primates and *X. laevis* and 2G for *X. tropicalis*
-  - **Argument 4**: K-mer size. For *Xenopus* we used k=13 and for primates it was k=7
-  - **Argument 5**: Subterminal Heterochromatin Search Space Size. This argument is key as the rest of the analysis heavily depends on the estimated size of the                       search space. For primates we used 5MB. For *Xenopus* we used 20MB (Arguments need to be full numbers). (Details for why are in the paper)
-  - **Argument 6**: Label for search space. 5M and 20M in our case
+  - **Argument 3**: Integer for total genome size. This doesn't need to be exact. I used 3G for primates and *X. laevis* and 2G for *X. tropicalis*
+  - **Argument 4**: Integer for k-mer size. For *Xenopus* we used k=13 and for primates it was k=7
+  - **Argument 5**: Integer for subterminal heterochromatin search space size. This argument is key as the rest of the analysis heavily depends on the estimated                       size of the search space. For primates we used 5MB. For *Xenopus* we used 20MB (Arguments need to be full numbers). (Details for why are in                        the paper)
+  - **Argument 6**: String as label for search space. 5M and 20M in our case
     
 - Example for chimp:
 
@@ -104,8 +104,14 @@
 
   - In this step, we are running the applicable statistical test on each k-mer to ask for its ability to differentiate between the designated 5p and 3p terminal       ends and the interstitial region of chromosomes. Given the normal distributions 13-mers produce in *Xenopus*, we use ANOVA + TukeyHSD. For the non-normal          distributions of 7-mers in primates, we use Kruscal-Wallis + Dunn's
 
-  - The scripts `Kmap.diploid.ST.dunns.R`, `Kmap.diploid.ST.R` and `Kmap.tetraploid.ST.R` are used for this analysis depending on the species and k. They all          generally do the same thing: normalizing counts based on the size of each chromosome and creating the `norm.tbl file`, and applying either ANOVA or Kruskal-       Wallis tests followed by TukeyHSD or Dunn's tests respecitivelly, creating the `tukey.tbl` or `dunn.tbl` files.
+  - The scripts `Kmap.diploid.ST.dunns.R`, `Kmap.diploid.ST.R` and `Kmap.tetraploid.ST.R` are used for this analysis depending on the species and k. They all          generally do the same thing: normalizing counts based on the size of each chromosome and creating the `norm.tbl file`, and applying either ANOVA or Kruskal-       Wallis tests followed by TukeyHSD or Dunn's tests respecitivelly, creating the `tukey.tbl` or `dunn.tbl` files. Arguments are as follows:
 
+    - **Argument 1**: Genome(chromosome) size file (instructions on how to make it can be found in **Genome Set Up** section above)
+    - **Argument 2**: K-mer count tables: `STcount.merged.tbl` or `STcount.merged.filtered.tbl`. These need to have headers included (**Step 1**)
+    - **Argument 3**: Integer for Subterminal search space. Should be the same as **Argument 4** for the `SubTeloJelly.variable.pl` script
+    - **Argument 4**: Integer for total number of k-mers being tested. Can get this number using `wc -l STcount.merged.txt` - 1 to not count the header 
+    - **Argument 5**: String for tukey or dunn table. I do `species.dunns.tbl` or `species.tukey.tbl` depending on the script used
+    - **Argument 6**: String for normalized k-mer count table. I do `species.norm.tbl`
 
     #### Parallelizing Step 2. for `sbatch` job submissions
 
