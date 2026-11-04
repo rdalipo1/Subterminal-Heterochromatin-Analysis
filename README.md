@@ -10,6 +10,7 @@
 
 - Perl
 - Jellyfish
+- python3
 - R
   - [karyoploteR](https://www.bioconductor.org/packages/release/bioc/html/karyoploteR.html)
   - [HMM](https://cran.r-project.org/web/packages/HMM/index.html)
