@@ -1,4 +1,4 @@
-#!/data/home/rdalipo1/miniforge3/envs/r442/bin/Rscript
+
 library(dunn.test)
 
 args<- commandArgs(trailingOnly = TRUE);
