@@ -89,7 +89,7 @@
 
   - The resulting file should have every unique k-mer (row) count for each chromosomal region (column). The regions are defined by the 5th argument in the script             `SubTeloJelly.variable.pl`, so for each chromosome, there should be the 5p, 3p and interstitial counts as columns.
     
-  #### K-mer filtering
+    #### K-mer filtering
   - Your choice of k (Argument 4) will determine how many unique k-mers are in the file. Higher k means more unique k-mers. This means that there will be some         counts in this table that will be very low or 0, making it difficult to run statisticall tests on them.
  
   - The script `filter_JellyRows.pl` takes the `STcount.merged.txt` file as the first argument and an integer that defines the minimum required count for a k-mer      in each region. Example usage:
@@ -102,4 +102,13 @@
  
  ### Step 2. Running ANOVA or Dunn's tests | Creating norm.tbl and tukey.tbl or dunn.tbl
 
-  - In this step, we are running the applicable statistical test on each k-mer to ask for its ability to differentiate between the designated 5p and 3p terminal       ends and the interstitial region of chromosomes. Given the normal distributions 13-mers produce in *Xenopus*, we use ANOVA + TukeyHSD. For the non-normal          distributions of 7-mers in primates, we use Kruscal-Wallis + Dunn
+  - In this step, we are running the applicable statistical test on each k-mer to ask for its ability to differentiate between the designated 5p and 3p terminal       ends and the interstitial region of chromosomes. Given the normal distributions 13-mers produce in *Xenopus*, we use ANOVA + TukeyHSD. For the non-normal          distributions of 7-mers in primates, we use Kruscal-Wallis + Dunn's
+
+  - The scripts `Kmap.diploid.ST.dunns.R`, `Kmap.diploid.ST.R` and `Kmap.tetraploid.ST.R` are used for this analysis depending on the species and k. They all          generally do the same thing: normalizing counts based on the size of each chromosome and creating the `norm.tbl file`, and applying either ANOVA or Kruskal-       Wallis tests followed by TukeyHSD or Dunn's tests respecitivelly, creating the `tukey.tbl` or `dunn.tbl` files.
+
+
+  #### Parallelizing Step 2. for sbatch job submissions
+
+### Step 3. Finding k-mer locations along each chromosome
+
+  
