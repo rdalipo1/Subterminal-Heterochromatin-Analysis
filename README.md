@@ -96,3 +96,7 @@
       **Note:** This script removes the header from `STcount.merged.txt` You will need to paste it from the original in an extra step.
     
   - In the paper, we used k=7 for the primates and k=13 for *Xenopus*. K=7 produces 8192 unique k-mers none of which require filtering (at least for the genomes       used in this paper). K=13 produces much more unique k-mers, depending on the genome, thus we filtered the count by a minimum of 100 as shown in the example        above.
+ 
+  ### Step 2. Running ANOVA or Dunn's tests | Creating norm.tbl and tukey.tbl or dunn.tbl
+
+  - 
