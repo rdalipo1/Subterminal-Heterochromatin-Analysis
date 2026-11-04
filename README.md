@@ -64,7 +64,24 @@
 
     **Note:** For our analysis, we did not use acrocentric chromosomes for Steps 1 and 2 below. For chimp and gorilla, you can manually remove acrocentrics as         they are described in the supplemental figure II.8 of [Yoo D., et al (2025)](https://www.nature.com/articles/s41586-025-08816-3). We still attempt to call         subterminal regions in these chromosomes, but we do not use k-mer counts in these regions to differentiate subterminal and interstitial k-mers statistically. 
     
+#### *X. laevis* specific set up
 
+  - For the polyploid you need to generate a `homeolog.tbl`, a tsv that will look like this in the case of *X. laevis*:
+
+|          |          |
+|----------|----------|
+| Chr1L    | Chr1S    |
+| Chr2L    | Chr2S    |
+| Chr3L    | Chr3S    |
+| Chr4L    | Chr4S    |
+| Chr5L    | Chr5S    |
+| Chr6L    | Chr6S    |
+| Chr7L    | Chr7S    |
+| Chr8L    | Chr8S    |
+| Chr9_10L | Chr9_10S |
+
+  1. This can be made by first creating a list of chromosome names from the fasta file: `grep ‘Chr my.genome.fasta | sed ‘s/>//’ > chr.list’`
+  2. Then using sed to pair up homoeologous chromosomes. Works easily since the v10 assembly has them paired: `sed 'N;s/\n/\t/' chr.list > homeolog.tbl`
 
 ### Step 1. K-mer counting and filtering
 
@@ -115,14 +132,15 @@
     - **Argument 5**: String for name of tukey or dunn table. I do `species.dunns.tbl` or `species.tukey.tbl` depending on the script used
     - **Argument 6**: String for name of normalized k-mer count table. I do `species.norm.tbl`
    
-      **Note:** `Kmap.tetraploid.ST.R` 5th argument is the homology.tbl created in the **Genome Set Up section**. Followed by the strings for the stats table and                   the norm table
+      **Note:** `Kmap.tetraploid.ST.R` 5th argument is the homeolog.tbl created in the **Genome Set Up section**. Followed by the strings for the stats table                       (6th) and the norm table (7th)
 
   - *Xenopus laevis* example:
 
-      `./Kmap.tetraploid.ST.R ~/v10.XlaXtr.homology/xla.t2t/xla.t2t.length.txt STcount.merged.filtered.txt 20000000 7167258 ~/v10.XlaXtr.homology/xla.t2t/Xenla10.Subgenome.txt xla.t2t.st13.tukey.tbl xla.t2t.st13.norm.tbl &`
+      `./Kmap.tetraploid.ST.R xla.chronly.chr.size.txt STcount.merged.filtered.txt 20000000 7167258 homeolog.tbl xla.tukey.tbl xla.norm.tbl &`
+    
   - Diploid example
 
-      ``
+      `Rscript Kmap.diploid.ST.dunns.R chimp.t2t.chr.length.noacros.txt STcount.merged.filtered.txt 5000000 8192 chimp.t2t.dunns.tbl chimp.t2t.norm.tbl >                 dunns.log` (The function dunn.test() produces extra output that goes to STDOUT, hence the `>dunns.log`)
 
     
     #### Parallelizing Step 2. for `sbatch` job submissions
