@@ -92,6 +92,6 @@
 
       `perl ./filter_JellyRows.pl STcount.merged.txt 100 > STcount.merged.filtered.txt`
 
-      **Note** This script removes the header from `STcount.merged.txt` You will need to paste it from the original in an extra step.
+      **Note:** This script removes the header from `STcount.merged.txt` You will need to paste it from the original in an extra step.
     
-  - In the paper, we used k=7 for the primates and k=13 for *Xenopus*. K=7 produces 8192 unique k-mers none of which require filtering. K=13 produces much more        depending on the genome and thus we filtered the count by a minimum of 100 as shown in the example above.
+  - In the paper, we used k=7 for the primates and k=13 for *Xenopus*. K=7 produces 8192 unique k-mers none of which require filtering (at least for the genomes       used in this paper). K=13 produces much more unique k-mers, depending on the genome, thus we filtered the count by a minimum of 100 as shown in the example        above.
