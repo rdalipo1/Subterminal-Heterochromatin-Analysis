@@ -145,7 +145,7 @@
     
     #### Parallelizing Step 2. for `sbatch` job submissions
 
-  - This job will take a long time to finish so it may be advisable to parallelize and split the STcount.merged.txt file using the `split` function in bash:
+  - This job will take a long time to finish for so it may be advisable to parallelize and split the STcount.merged.txt file using the `split` function in bash:
 
       
   
