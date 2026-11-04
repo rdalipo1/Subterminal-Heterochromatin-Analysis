@@ -100,6 +100,6 @@
     
   - In the paper, we used k=7 for the primates and k=13 for *Xenopus*. K=7 produces 8192 unique k-mers none of which require filtering (at least for the genomes       used in this paper). K=13 produces much more unique k-mers, depending on the genome, thus we filtered the count by a minimum of 100 as shown in the example        above.
  
-  ### Step 2. Running ANOVA or Dunn's tests | Creating norm.tbl and tukey.tbl or dunn.tbl
+ ### Step 2. Running ANOVA or Dunn's tests | Creating norm.tbl and tukey.tbl or dunn.tbl
 
-  - In this step, we are running the applicable statistical test on each k-mer to ask for its ability to differentiate between the designated 5p and 3p terminal ends and the interstitial region of chromosomes. 
+  - In this step, we are running the applicable statistical test on each k-mer to ask for its ability to differentiate between the designated 5p and 3p terminal       ends and the interstitial region of chromosomes. Given the normal distributions 13-mers produce in *Xenopus* we use ANOVA + TukeyHSD, and non-normal               distributions of 7-mers in primates we use Kruscal-Wallis + Dunn
