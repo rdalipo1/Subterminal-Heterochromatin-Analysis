@@ -107,7 +107,7 @@
   - The scripts `Kmap.diploid.ST.dunns.R`, `Kmap.diploid.ST.R` and `Kmap.tetraploid.ST.R` are used for this analysis depending on the species and k. They all          generally do the same thing: normalizing counts based on the size of each chromosome and creating the `norm.tbl file`, and applying either ANOVA or Kruskal-       Wallis tests followed by TukeyHSD or Dunn's tests respecitivelly, creating the `tukey.tbl` or `dunn.tbl` files.
 
 
-    #### Parallelizing Step 2. for sbatch job submissions
+    #### Parallelizing Step 2. for `sbatch` job submissions
 
   ### Step 3. Finding k-mer locations along each chromosome
 
