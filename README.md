@@ -140,7 +140,7 @@
     
   - Diploid example
 
-      `Rscript Kmap.diploid.ST.dunns.R chimp.t2t.chr.length.noacros.txt STcount.merged.filtered.txt 5000000 8192 chimp.t2t.dunns.tbl chimp.t2t.norm.tbl >                 dunns.log` (The function dunn.test() produces extra output that goes to STDOUT, hence the `>dunns.log`)
+      `Rscript Kmap.diploid.ST.dunns.R chimp.t2t.chr.length.noacros.txt STcount.merged.filtered.txt 5000000 8192 chimp.t2t.dunns.tbl chimp.t2t.norm.tbl > dunns.log` (The function dunn.test() produces extra output that goes to STDOUT, hence the `>dunns.log`)
 
     
     #### Parallelizing Step 2. for `sbatch` job submissions
