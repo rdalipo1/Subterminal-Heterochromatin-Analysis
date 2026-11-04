@@ -104,15 +104,27 @@
 
   - In this step, we are running the applicable statistical test on each k-mer to ask for its ability to differentiate between the designated 5p and 3p terminal       ends and the interstitial region of chromosomes. Given the normal distributions 13-mers produce in *Xenopus*, we use ANOVA + TukeyHSD. For the non-normal          distributions of 7-mers in primates, we use Kruscal-Wallis + Dunn's
 
-  - The scripts `Kmap.diploid.ST.dunns.R`, `Kmap.diploid.ST.R` and `Kmap.tetraploid.ST.R` are used for this analysis depending on the species and k. They all          generally do the same thing: normalizing counts based on the size of each chromosome and creating the `norm.tbl file`, and applying either ANOVA or Kruskal-       Wallis tests followed by TukeyHSD or Dunn's tests respecitivelly, creating the `tukey.tbl` or `dunn.tbl` files. Arguments are as follows:
+    - The scripts `Kmap.diploid.ST.dunns.R`, `Kmap.diploid.ST.R` and `Kmap.tetraploid.ST.R` are used for this analysis depending on the species and k. They all          generally do the same thing: normalizing counts based on the size of each chromosome and creating the `norm.tbl file`, and applying either ANOVA or Kruskal-       Wallis tests followed by TukeyHSD or Dunn's tests respecitivelly, creating the `tukey.tbl` or `dunn.tbl` files.
+
+  - Arguments are as follows:
 
     - **Argument 1**: Genome(chromosome) size file (instructions on how to make it can be found in **Genome Set Up** section above)
     - **Argument 2**: K-mer count tables: `STcount.merged.tbl` or `STcount.merged.filtered.tbl`. These need to have headers included (**Step 1**)
     - **Argument 3**: Integer for Subterminal search space. Should be the same as **Argument 4** for the `SubTeloJelly.variable.pl` script
     - **Argument 4**: Integer for total number of k-mers being tested. Can get this number using `wc -l STcount.merged.txt` - 1 to not count the header 
-    - **Argument 5**: String for tukey or dunn table. I do `species.dunns.tbl` or `species.tukey.tbl` depending on the script used
-    - **Argument 6**: String for normalized k-mer count table. I do `species.norm.tbl`
+    - **Argument 5**: String for name of tukey or dunn table. I do `species.dunns.tbl` or `species.tukey.tbl` depending on the script used
+    - **Argument 6**: String for name of normalized k-mer count table. I do `species.norm.tbl`
+   
+      **Note:** `Kmap.tetraploid.ST.R` 5th argument is the homology.tbl created in the **Genome Set Up section**. Followed by the strings for the stats table and                   the norm table
 
+  - *Xenopus laevis* example:
+
+      `./Kmap.tetraploid.ST.R ~/v10.XlaXtr.homology/xla.t2t/xla.t2t.length.txt STcount.merged.filtered.txt 20000000 7167258 ~/v10.XlaXtr.homology/xla.t2t/Xenla10.Subgenome.txt xla.t2t.st13.tukey.tbl xla.t2t.st13.norm.tbl &`
+  - Diploid example
+
+      ``
+
+    
     #### Parallelizing Step 2. for `sbatch` job submissions
 
   ### Step 3. Finding k-mer locations along each chromosome
