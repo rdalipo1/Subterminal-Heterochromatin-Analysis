@@ -62,6 +62,9 @@
 | Chr5 | 183320697 |
 | Chr6 | 174648847 |
 
+    **Note:** For our analysis, we did not use acrocentric chromosomes for Steps 1 and 2 below. For chimp and gorilla, you can manually remove acrocentrics as         they are described in the supplemental figure II.8 of [Yoo D., et al (2025)](https://www.nature.com/articles/s41586-025-08816-3). We still attempt to call         subterminal regions in these chromosomes, but we do not use k-mer counts in these regions to differentiate subterminal and interstitial k-mers statistically. 
+    
+
 
 ### Step 1. K-mer counting and filtering
 
@@ -99,4 +102,4 @@
  
   ### Step 2. Running ANOVA or Dunn's tests | Creating norm.tbl and tukey.tbl or dunn.tbl
 
-  - 
+  - In this step, we are running the applicable statistical test on each k-mer to ask for its ability to differentiate between the designated 5p and 3p terminal ends and the interstitial region of chromosomes. 
