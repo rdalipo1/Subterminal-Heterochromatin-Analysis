@@ -78,3 +78,20 @@
     `perl ~/scripts/SubTeloJelly.variable.pl ~/chimp.genome/t2t/chimp.t2t.chr.length.noacros.txt ~/chimp.genome/t2t/chimp.t2t.db 3000000000 13 5000000 5MB &`
 
   - This job may take a long time and you should use `srun` to not destroy your servers headnode
+ 
+  - This script produces 3 types of files. The sorted. files will have k-mer counts by chromosome and region. We want to merge each file that starts with sorted.      including the file headers. Using the script `multi_join.sh` in this way creates the `STcount.merged.txt` file:
+ 
+      `./multi_join.sh sorted.Chr* > STcount.merged.txt`
+
+  - The resulting file should have every unique k-mer (row) count for each chromosomal region (column). The regions are defined by the 5th argument in the script             `SubTeloJelly.variable.pl`, so for each chromosome, there should be the 5p, 3p and interstitial counts as columns.
+    
+  #### K-mer filtering
+  - Your choice of k (Argument 4) will determine how many unique k-mers are in the file. Higher k means more unique k-mers. This means that there will be some         counts in this table that will be very low or 0, making it difficult to run stats test on them.
+ 
+  - The script `filter_JellyRows.pl` takes the `STcount.merged.txt` file as the first argument and an integer that defines the minimum required count for a k-mer      in each region. Example usage:
+
+      `perl ./filter_JellyRows.pl STcount.merged.txt 100 > STcount.merged.filtered.txt`
+
+      **Note** This script removes the header from `STcount.merged.txt` You will need to paste it from the original in an extra step.
+    
+  - In the paper, we used k=7 for the primates and k=13 for *Xenopus*. K=7 produces 8192 unique k-mers none of which require filtering. K=13 produces much more        depending on the genome and thus we filtered the count by a minimum of 100 as shown in the example above.
