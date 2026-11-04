@@ -1,4 +1,3 @@
-#!/data/home/rdalipo1/../asession/anaconda3/envs/newspiedie/bin/Rscript
 
 args<- commandArgs(trailingOnly = TRUE);
 if (length(args)!=7) {
