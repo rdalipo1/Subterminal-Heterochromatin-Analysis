@@ -144,6 +144,21 @@
 
       **Note:** The `Rscript` at the beginning doesn't need to be there if you add a shebang line at the top of the script: `#!/data/home/rdalipo1/miniforge3/envs/r442/bin/Rscript`. This needs to point to which Rscript.exe file you want to execute.
 
+  - Once the final tukey/dunn and norm tables are complete, we use `kmer.filtering.ST.avg.tetraploid.R` (*X. laevis*), `kmer.filtering.ST.diploid.R`(*X. tropicalis*) and `kmer.filtering.ST.diploid.dunns.R` (primates) to look at significant p-values and determine what groups k-mers belong to.
+
+  - Arguments are as follows:
+    
+    - **Argument 1**: Tukey or Dunn table
+    - **Argument 2**: Normalized k-mer table
+    - **Argument 3**: Suffix for resulting k-mer files. I usually do the species name: `xla`
+   
+  - *Xenopus laevis* example:
+
+      `Rscript ./Kmap.tetraploid.ST.R xla.chronly.chr.size.txt STcount.merged.filtered.txt 20000000 7167258 homeolog.tbl xla.tukey.tbl xla.norm.tbl &`
+    
+  - Diploid example
+
+      `Rscript ./Kmap.diploid.ST.dunns.R chimp.t2t.chr.length.noacros.txt STcount.merged.filtered.txt 5000000 8192 chimp.t2t.dunns.tbl chimp.t2t.norm.tbl > dunns.log`
     
     #### Parallelizing Step 2. for `sbatch` job submissions
 
@@ -151,8 +166,12 @@
 
     1. Use the `split.wheader.sh` script on STcount.merged.filtered.txt: `./split.wheader.sh STcount.merged.filtered.txt 10000 stcount`
        - This line will split the file into multiple `10000` line files including the header in each. `stcount` dictates the prefix of the files
-    2. The `Kmap.tetraploid.ST.wrapper.sh` script simply invokes `Kmap.tetraploid.ST.sh` in the same way as the example above except it utilizes the `#SBATCH --array=0-190` line as a way to call each split file individually. **Note:** Arguments 1, 3, and 4 remain the same but the others have `$(printf "%03d" ${N})` added, which keeps track of which file number is being used for each batch.
+         
+    2. The `Kmap.tetraploid.ST.wrapper.sh` script simply invokes `Kmap.tetraploid.ST.sh` in the same way as the example above except it utilizes the `#SBATCH --array=0-190` line as a way to call each split file individually.
+       
+       - **Note:** Arguments 1, 3, and 4 remain the same but the others have `$(printf "%03d" ${N})` added, which keeps track of which file number is being used for each batch.
        - Make sure to adjust the `#SBATCH --array=0-190` to match the number of files `split.wheader.sh` generates
+         
     3. Lastly, use sed or awk to merge all these separate tukey and norm tables into one, without having the header repeated: `awk 'FNR==1 && NR!=1{next;}{print}' xla.tukey.split.* > xla.tukey.merged.txt` 
      
 
