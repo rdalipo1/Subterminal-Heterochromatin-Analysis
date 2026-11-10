@@ -147,10 +147,16 @@
     
     #### Parallelizing Step 2. for `sbatch` job submissions
 
-  - This job will take a long time to finish for so it may be advisable to parallelize and split the STcount.merged.txt file using the `split` function in bash:
+  - This job will take a long time to finish for so it may be advisable to parallelize and split the STcount.merged.txt file using the `split` function in bash. Here is how I parallelized for *X. laevis*:
+
+    1. Use the `split.wheader.sh` script on STcount.merged.filtered.txt: `./split.wheader.sh STcount.merged.filtered.txt 10000 stcount`
+       - This line will split the file into multiple `10000` line files including the header in each. `stcount` dictates the prefix of the files
+    2. The `Kmap.tetraploid.ST.wrapper.sh` script simply invokes `Kmap.tetraploid.ST.sh` in the same way as the example above except it utilizes the `#SBATCH --array=0-190` line as a way to call each split file individually. **Note:** Arguments 1, 3, and 4 remain the same but the others have `$(printf "%03d" ${N})` added, which keeps track of which file number is being used for each batch.
+       - Make sure to adjust the `#SBATCH --array=0-190` to match the number of files `split.wheader.sh` generates
+    3. Lastly, use sed or awk to merge all these separate tukey and norm tables into one, without having the header repeated: `awk 'FNR==1 && NR!=1{next;}{print}' xla.tukey.split.* > xla.tukey.merged.txt` 
+     
 
       
-  
 
   ### Step 3. Finding k-mer locations along each chromosome
 
