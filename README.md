@@ -136,11 +136,13 @@
 
   - *Xenopus laevis* example:
 
-      `./Kmap.tetraploid.ST.R xla.chronly.chr.size.txt STcount.merged.filtered.txt 20000000 7167258 homeolog.tbl xla.tukey.tbl xla.norm.tbl &`
+      `Rscript ./Kmap.tetraploid.ST.R xla.chronly.chr.size.txt STcount.merged.filtered.txt 20000000 7167258 homeolog.tbl xla.tukey.tbl xla.norm.tbl &`
     
   - Diploid example
 
-      `Rscript Kmap.diploid.ST.dunns.R chimp.t2t.chr.length.noacros.txt STcount.merged.filtered.txt 5000000 8192 chimp.t2t.dunns.tbl chimp.t2t.norm.tbl > dunns.log` (The function dunn.test() produces extra output that goes to STDOUT, hence the `>dunns.log`)
+      `Rscript ./Kmap.diploid.ST.dunns.R chimp.t2t.chr.length.noacros.txt STcount.merged.filtered.txt 5000000 8192 chimp.t2t.dunns.tbl chimp.t2t.norm.tbl > dunns.log` (The function dunn.test() produces extra output that goes to STDOUT, hence the `>dunns.log`)
+
+      **Note:** The `Rscript` at the beginning doesn't need to be there if you add a shebang line at the top of the script: `#!/data/home/rdalipo1/miniforge3/envs/r442/bin/Rscript`. This needs to point to which Rscript.exe file you want to execute.
 
     
     #### Parallelizing Step 2. for `sbatch` job submissions
