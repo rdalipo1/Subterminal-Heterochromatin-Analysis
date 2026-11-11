@@ -142,7 +142,7 @@
 
       `Rscript ./Kmap.diploid.ST.dunns.R chimp.t2t.chr.length.noacros.txt STcount.merged.filtered.txt 5000000 8192 chimp.t2t.dunns.tbl chimp.t2t.norm.tbl > dunns.log` (The function dunn.test() produces extra output that goes to STDOUT, hence the `>dunns.log`)
 
-      **Note:** The `Rscript` at the beginning doesn't need to be there if you add a shebang line at the top of the script: `#!/data/home/rdalipo1/miniforge3/envs/r442/bin/Rscript`. This needs to point to which Rscript.exe file you want to execute.
+      **Note:** The `Rscript` at the beginning doesn't need to be there if you add a shebang line at the top of the script: `#!/data/home/rdalipo1/miniforge3/envs/r442/bin/Rscript`. This needs to point to which Rscript.exe file located in your R download directory.
 
   - Once the final tukey/dunn and norm tables are complete, we use `kmer.filtering.ST.avg.tetraploid.R` (*X. laevis*), `kmer.filtering.ST.diploid.R`(*X. tropicalis*) and `kmer.filtering.ST.diploid.dunns.R` (primates) to look at significant p-values and determine what groups k-mers belong to.
 
