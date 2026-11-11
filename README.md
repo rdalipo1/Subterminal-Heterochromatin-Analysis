@@ -181,11 +181,11 @@
   ### Step 3. Finding k-mer locations along each chromosome
 
   -  The filtering scripts should produce files that are lists of k-mers with the name of the file indicating what they are significant for. Here is an example file head for significant ST k-mers in chimp:
-    AAACACG
-    AAAGCGG
-    AACACGG
-    AACCCTA
-    AACCGCC
+    AAACACG\n
+    AAAGCGG\n
+    AACACGG\n
+    AACCCTA\n
+    AACCGCC\n
     AACCGCG
   -  The diploid scripts will generate two files: IT.kmers and ST.kmers. For *X. laevis*, the `kmer.filtering.ST.avg.tetraploid.sh` script should generate 8 files:  L.ST, S.ST, L.IT, S.IT, ST.Shared, IT.Shared, LST.contaminant and SST.contaminant
     -  The latter two files have k-mers that are significantly enriched in one subgenome but also high count in the other. Ultimately for the analysis these were added to the L.ST, S.ST list since it is the ratio at which these k-mers are present that is driving the significance.
