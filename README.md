@@ -154,11 +154,11 @@
    
   - *Xenopus laevis* example:
 
-      `Rscript ./Kmap.tetraploid.ST.R xla.chronly.chr.size.txt STcount.merged.filtered.txt 20000000 7167258 homeolog.tbl xla.tukey.tbl xla.norm.tbl &`
+      `Rscript ./kmer.filtering.ST.avg.tetraploid.R xla.tukey.merged.tbl xla.norm.merged.tbl xla`
     
-  - Diploid example
+  - Primate example
 
-      `Rscript ./Kmap.diploid.ST.dunns.R chimp.t2t.chr.length.noacros.txt STcount.merged.filtered.txt 5000000 8192 chimp.t2t.dunns.tbl chimp.t2t.norm.tbl > dunns.log`
+      `Rscript ./kmer.filtering.ST.diploid.dunns.R chimp.t2t.dunns.tbl chimp.t2t.norm.tbl chimp.t2t`
     
     #### Parallelizing Step 2. for `sbatch` job submissions
 
@@ -174,14 +174,38 @@
          
     3. Use sed or awk to merge all these separate tukey and norm tables, without having the header repeated: `awk 'FNR==1 && NR!=1{next;}{print}' xla.tukey.split.* > xla.tukey.merged.txt` 
      
-    4. The k-mer filtering process can also be paralelized but may not need to be since the filtering scripts are faster. Still I had to paralellize for the 13-mers, here is the script I used to run the sbatch for *X.laevis*: `kmer.filtering.ST.avg.tetraploid.wrapper`
+    4. The k-mer filtering process can also be paralelized, but may not be needed to be since the filtering scripts are faster. Still I had to paralellize for the 13-mers, here is the script I used to run the sbatch for *X.laevis*: `kmer.filtering.ST.avg.tetraploid.wrapper.sh`
 
       
   
   ### Step 3. Finding k-mer locations along each chromosome
 
-  -  Next
+  -  The filtering scripts should produce files that are lists of k-mers with the name of the file indicating what they are significant for. Here is an example file head for significant ST k-mers in chimp:
+    AAACACG
+    AAAGCGG
+    AACACGG
+    AACCCTA
+    AACCGCC
+    AACCGCG
+  -  The diploid scripts will generate two files: IT.kmers and ST.kmers. For *X. laevis*, the `kmer.filtering.ST.avg.tetraploid.sh` script should generate 8 files:  L.ST, S.ST, L.IT, S.IT, ST.Shared, IT.Shared, LST.contaminant and SST.contaminant
+    -  The latter two files have k-mers that are significantly enriched in one subgenome but also high count in the other. Ultimately for the analysis these were added to the L.ST, S.ST list since it is the ratio at which these k-mers are present that is driving the significance.
 
+  -  The script `fastaRegexFinder.py` is taken from this [github](https://github.com/dariober/bioinformatics-cafe/tree/master/fastaRegexFinder) and does a great job of efficiently finding the locations of sequences within a given fasta file. I made a couple slight modifications to make sure the output matches what you would get if you used blastn to find the locations (check comments within script). I invoke `fastaRegexFinder.py` within the `fastaRegex.to.bed.sh` script, so that my output is in bed format.
+  
+  -  Arguments for `fastaRegexFinder.py`:
+    -  **Argument 1**: Genome fasta file
+    -  **Argument 2**: Sequence that needs to be found
+
+  - Arguments for `fastaRegex.to.bed.sh`
+    -  **Argument 1**: Genome fasta file
+    -  **Argument 2**: K-mer list that need to be located (Same format as output from k-mer filtering scripts)
+    -  **Argument 3**: Directory name for output files to be stored in (makes a new directory if not already created)
+   
+  - Example using `fastaRegex.to.bed.sh`:
+      `./fastaRegex.to.bed.sh chimp.t2t.chronly.renamed.headers.fa ST.chimp.t2t.txt ST.kmers`
+    
+      - This will probably take a long time to finish up, so you should also parallelize this by splitting your k-mer list or `ST.chimp.t2t.txt` in the example above. This is the script I use to do that `fastaRegex.to.bed.wrapper.sh` which is very similar to my other wrapper scripts. Make sure to change the array range as necessary.
+        
   ### Step 4. Determining emission and applying HMM
 
   
