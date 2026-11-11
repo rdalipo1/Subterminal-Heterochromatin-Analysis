@@ -179,6 +179,8 @@
 
   ### Step 3. Finding k-mer locations along each chromosome
 
+  -  Next
+
   ### Step 4. Determining emission and applying HMM
 
   
