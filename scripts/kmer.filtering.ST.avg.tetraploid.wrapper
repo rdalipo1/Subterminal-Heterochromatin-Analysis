@@ -1,0 +1,11 @@
+#!/bin/bash
+#SBATCH --array=0-696
+#SBATCH --partition=Standard
+#SBATCH --cpus-per-task=1
+
+N=${SLURM_ARRAY_TASK_ID}
+
+
+Rscript ~/scripts/kmer.filtering.ST.avg.tetraploid.R xla.tukey.split.$(printf "%03d" ${N}) xla.norm.split.$(printf "%03d" ${N}) $(printf "%03d" ${N})
+
+
