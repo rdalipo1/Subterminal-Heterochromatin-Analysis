@@ -172,11 +172,12 @@
        - **Note:** Arguments 1, 3, and 4 remain the same but the others have `$(printf "%03d" ${N})` added, which keeps track of which file number is being used for each run.
        - Make sure to adjust the `#SBATCH --array=0-190` to match the number of files `split.wheader.sh` generates
          
-    3. Lastly, use sed or awk to merge all these separate tukey and norm tables, without having the header repeated: `awk 'FNR==1 && NR!=1{next;}{print}' xla.tukey.split.* > xla.tukey.merged.txt` 
+    3. Use sed or awk to merge all these separate tukey and norm tables, without having the header repeated: `awk 'FNR==1 && NR!=1{next;}{print}' xla.tukey.split.* > xla.tukey.merged.txt` 
      
+    4. The k-mer filtering process can also be paralelized but may not need to be since the filtering scripts are faster. Still I had to paralellize for the 13-mers, here is the script I used to run the sbatch for *X.laevis*: `kmer.filtering.ST.avg.tetraploid.wrapper`
 
       
-
+  
   ### Step 3. Finding k-mer locations along each chromosome
 
   -  Next
