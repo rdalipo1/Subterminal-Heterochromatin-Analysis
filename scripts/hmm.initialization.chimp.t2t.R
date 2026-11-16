@@ -22,11 +22,11 @@ transprob[2,] <- c(.05,.95)
 
 transprob
 
+### Choosing training chromosome and setting up emmission table 
+
 emitprob <- matrix(nrow =2 , ncol = 3)
 rownames(emitprob) <- states
 colnames(emitprob) <- symbols
-
-### Choosing training chromosome and setting up emmission table
 
 chr7.st <- subset(all_emits, all_emits$Chr == "Chr7" & all_emits$Category != "IT")
 chr7.it <- subset(all_emits, all_emits$Chr == "Chr7" & all_emits$Category == "IT")
