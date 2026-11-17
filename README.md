@@ -260,4 +260,12 @@ AACCGCG
         
           `./hmm.emit.identifier.R chimp.t2t.st.bpoverlap.by.chrwindow.with.regions.tsv 8000 15000 chimp.t2t.st`
 
+  - Lastly, there are 4 separate `hmm.initialization.R` for each species that will run the HMM and plot the results using karyoploter. Included within the scripts are the previously identified subterminal heterochromatin regions that will be plotted alongside the HMM as shown in Figures 3 and 4 in the paper. There are options to only plot the HMM regions that are commented out.
+  - If you want to change the training chromosomes used, you will need to manually go into the scripts and adjust the emission probability sections
+    
+      - These scripts will take 3 arguments:
+        -  **Argument 1**: bpoverlap file with emission `chimp.t2t.st.bpoverlap.by.chrwindow.with.regions.emit.tsv`
+        -  **Argument 2**: Final file identifier, usually species name
+        -  **Argument 3**: Chromosome size file
+
 
