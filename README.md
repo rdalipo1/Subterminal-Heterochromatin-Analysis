@@ -4,7 +4,7 @@
 ### Currently a work in progress...
 
 
-## Before Starting Set-Up and Required Programs
+### Before Starting Set-Up and Required Programs
 
 ### Required Programs
 
@@ -47,7 +47,7 @@
 
   - The `-parse_seqids` will apply the renamed headers and you can use the `chimp.t2t.db` name to refer to the database in the future
 
-- Lastly, generate a chromosome a size file. The 'genome.size.from.fa.sh' script can be used to generate this. The two arguments it needs is the fa file and the name of the resulting chr.size file:
+- Generate a chromosome a size file. The `genome.size.from.fa.sh` script can be used to generate this. The two arguments it needs is the fa file and the name of the resulting chr.size file:
 
     `./genome.size.from.fa.sh chimp.t2t.chronly.renamed.headers.fa chimp.t2t.chronly.chr.size.txt`
 
@@ -62,7 +62,13 @@
 | Chr5 | 183320697 |
 | Chr6 | 174648847 |
 
+
+- Generate 100kbp windows for each chromosome using `bedtools makewindows` and the chr.size file:
+      `bedtools makewindows -g chimp.t2t.chr.length.txt -w 100000 > chimp.t2t.100kb.windows.bed`
+
     **Note:** For our analysis, we did not use acrocentric chromosomes for Steps 1 and 2 below. For chimp and gorilla, you can manually remove acrocentrics as         they are described in the supplemental figure II.8 of [Yoo D., et al (2025)](https://www.nature.com/articles/s41586-025-08816-3). We still attempt to call         subterminal regions in these chromosomes, but we do not use k-mer counts in these regions to differentiate subterminal and interstitial k-mers statistically. 
+
+  
     
 #### *X. laevis* specific set up
 
@@ -205,7 +211,44 @@ AACCGCG
       `./fastaRegex.to.bed.sh chimp.t2t.chronly.renamed.headers.fa ST.chimp.t2t.txt ST.kmers`
     
       - This will probably take a long time to finish up, so you should also parallelize this by splitting your k-mer list or `ST.chimp.t2t.txt` in the example above. This is the script I use to do that `fastaRegex.to.bed.wrapper.sh` which is very similar to my other wrapper scripts. Make sure to change the array range as necessary.
+   
+  - Lastly, merge all the resulting bed files in the created directory using cat: `cat *.bed > ST.kmers.merged.bed`
         
   ### Step 4. Determining emission and applying HMM
 
-  
+  - Before we get to the HMM we need to do some work with bedtools.
+
+  - Start by using `bedtools merge` on the `ST.kmers.merged.bed` file. Since we are using k-mers, there could be longer repeats that overlap on the same location. These need to be merged so they are counted as one repeat instead of the count being inflated for that bin.
+
+      `sort -k,1 -k2,2n ST.kmers.merged.bed > ST.kmers.merged.sorted.bed`
+      `bedtools merge -d 1 -i ST.kmers.bmerge.sorted.bed`
+
+  - Use `bedtools intersect` to intersect the `100kb.windows.bed` file with the `ST.kmers.bmerge.sorted.bed` file. The total number of base pairs overlapped by significant ST k-mers. **Note:** Must be done for each k-mer category that Step 2 identifies if applying the method for *X. laevis*.
+
+    `bedtools intersect -wao -a chimp.t2t.100kb.windows.bed -b ST.kmers.bmerge.sorted.bed > ST.kmers.chrwindow.intersect.bmerge.sorted.tsv &`
+
+  - We only care about the total number of bp overlap per 100kbp window so use bedtools groupby:
+
+      `cut -f 1,2,3,7 ST.kmers.chrwindow.intersect.bmerge.sorted.tsv | bedtools groupby -i - -g 1,2,3 -c 4 -o sum > ST.kmer.bpoverlap.by.chrwindow.tsv`
+
+  - It will be important to add an extra column to our table that indicates if a window is within our terminal search space. The `annotate.terminal.regions.sh` will do exactly that. It takes three arguments: 100kbp windows bed file, the chrwindow with ST counts table: `ST.kmer.bpoverlap.by.chrwindow.tsv`, and an integer representing the size of the initial search space used in step 1.
+
+   `./annotate.terminal.regions.sh chimp.t2t.100KB.windows.bed chimp.t2t.st.bpoverlap.by.chrwindow.tsv 5000000 > chimp.t2t.st.bpoverlap.by.chrwindow.with.regions.tsv &`
+
+  - Now we will be creating histograms (diploids) or kernel density plots (*X. laevis*) in order to determine our emission cut offs. The script `hmm.ratio.hists.ploter.R` should be used for diploids and will make two histograms showing the distributions of each 100kbp window in the interestitial region (top) and the terminal search space region (bottom). Examples of these used in the paper are shown in SupplementalFigure2. Arguments for the script are:
+    - Arguments for `hmm.ratio.hists.ploter.R`
+      -  **Argument 1**: bpoverlap file with annotated terminal regions `chimp.t2t.st.bpoverlap.by.chrwindow.with.regions.tsv`
+      -  **Argument 2**: Chr length file made in genome set up step `chimp.t2t.chr.length.txt`
+      -  **Argument 3**: Output PDF file name 
+      -  **Argument 4**: Integer for lower cut off
+      -  **Argument 5**: Integer for higher cut off
+      -  **Argument 6**: Species name
+      -  **Argument 7**: String for terminal regions size (used in the figure titles)
+
+  - The main goal here is to create conditionals that will separate the two distributions (green lines in SuppFig2). There should be an unknown category also for all the windows that fall in between these two distributions. For diploids you only need to select two numbers and use those as input for the next script.
+    
+  - However for *X. laevis* you should use `hmm.kernel.density.ploter.xla.R` to generate density plots for each k-mer category, similarly you want to create a set of conditionals that will separate the different distributions. Examples are shown in SupplementalFigure5.
+
+  - Once conditionals are decided, `hmm.emit.identifier.R` will add a column to our `chimp.t2t.st.bpoverlap.by.chrwindow.with.regions.tsv` that will indicate the emission state. For diploids, the states will be ST, IT or Unknown. These will later be compiled into emission probability tables selected from the training chromosome.
+
+
