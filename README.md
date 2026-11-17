@@ -242,13 +242,22 @@ AACCGCG
       -  **Argument 3**: Output PDF file name 
       -  **Argument 4**: Integer for lower cut off
       -  **Argument 5**: Integer for higher cut off
-      -  **Argument 6**: Species name
+      -  **Argument 6**: String for species name
       -  **Argument 7**: String for terminal regions size (used in the figure titles)
+     
+        `./hmm.ratio.hists.ploter.R chimp.t2t.st.bpoverlap.by.chrwindow.with.regions.tsv chimp.t2t.chr.length.txt chimp.t2t.st 8000 15000 chimp.t2t 5`
 
   - The main goal here is to create conditionals that will separate the two distributions (green lines in SuppFig2). There should be an unknown category also for all the windows that fall in between these two distributions. For diploids you only need to select two numbers and use those as input for the next script.
     
   - However for *X. laevis* you should use `hmm.kernel.density.ploter.xla.R` to generate density plots for each k-mer category, similarly you want to create a set of conditionals that will separate the different distributions. Examples are shown in SupplementalFigure5.
 
   - Once conditionals are decided, `hmm.emit.identifier.R` will add a column to our `chimp.t2t.st.bpoverlap.by.chrwindow.with.regions.tsv` that will indicate the emission state. For diploids, the states will be ST, IT or Unknown. These will later be compiled into emission probability tables selected from the training chromosome.
+    - Arguments for `hmm.emit.identifier.R`
+      -  **Argument 1**: bpoverlap file with annotated terminal regions `chimp.t2t.st.bpoverlap.by.chrwindow.with.regions.tsv`
+      -  **Argument 2**: Integer for lower cut off
+      -  **Argument 3**: Integer for higher cut off
+      -  **Argument 4**: Output file tag, usually species name for me
+        
+          `./hmm.emit.identifier.R chimp.t2t.st.bpoverlap.by.chrwindow.with.regions.tsv 8000 15000 chimp.t2t.st`
 
 
